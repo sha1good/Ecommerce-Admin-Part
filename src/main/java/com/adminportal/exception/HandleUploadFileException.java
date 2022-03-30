@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -17,12 +18,10 @@ public class HandleUploadFileException {
     @Value("$spring.http.multipart.max-file-size")
     private String maxFileSize;
 
-    @ExceptionHandler({MaxUploadSizeExceededException.class,BookUploadException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public String  handleUploadFileError(RedirectAttributes ra){
+    @ExceptionHandler(MultipartException.class)
+    public String  handleUploadFileError(MultipartException e,RedirectAttributes ra){
         System.out.println("Error Uplaoding the file  from HandleUploadFileException.....");
-        ra.addFlashAttribute("error", "You will not be able to add file bigger than " + maxFileSize  +  "Size");
-        return "addBook";
+        ra.addFlashAttribute("error", e.getCause().getMessage());
+        return "redirect:/add";
     }
 }

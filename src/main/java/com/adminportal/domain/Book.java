@@ -9,7 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,14 +26,24 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+
+	@NotEmpty(message = "Title cannot be empty.")
+	@Size(min = 5, max = 250)
 	private String title;
+	@NotEmpty(message = "Author cannot be empty.")
+	@Size(min = 5, max = 250)
 	private String author;
+
 	private String publisher;
 	private String publicationDate;
 	private String language;
+	@NotEmpty(message = "Category cannot be empty.")
 	private String category;
 	private int numberOfPages;
+
+
 	private String format;
+
 	private int isbn;
 	private double shippingWeight;
 	private double listPrice;
@@ -189,8 +205,26 @@ public class Book {
 	public void setBookToCartitemList(List<BookToCartItem> bookToCartitemList) {
 		this.bookToCartitemList = bookToCartitemList;
 	}
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Book{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", author='" + author + '\'' +
+				", publisher='" + publisher + '\'' +
+				", publicationDate='" + publicationDate + '\'' +
+				", language='" + language + '\'' +
+				", category='" + category + '\'' +
+				", numberOfPages=" + numberOfPages +
+				", format='" + format + '\'' +
+				", isbn=" + isbn +
+				", shippingWeight=" + shippingWeight +
+				", listPrice=" + listPrice +
+				", ourPrice=" + ourPrice +
+				", active=" + active +
+				", description='" + description + '\'' +
+				", inStockNumber=" + inStockNumber +
+				'}';
+	}
 }
